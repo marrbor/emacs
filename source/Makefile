@@ -3,7 +3,7 @@ include ../Makefile.leaf
 INSTALL:=$(SUDO) make install EMACS=$(EMACS)
 INSTALL_W3M:=$(SUDO) make install-lisp EMACS=$(EMACS) lispdir=$(SITELISP)/w3m
 
-all: skk w3m
+all: apel skk w3m
 
 skk: $(SHAREDIR)/skk $(VERSITELISP)/skk
 w3m: apel $(SITELISP)/w3m
@@ -23,14 +23,6 @@ $(VERSITELISP)/skk: $(SKKARC)
 	tar -zxf $(SKKARC)
 	cd $(SKKDIR) && $(INSTALL)
 
-# apel
-APELARC:=$(shell $(FIND) . -name 'apel*.tar.gz')
-APELDIR:=$(call arc2dir,$(APELARC))
-$(SITELISP)/apel: $(APELARC)
-	tar -zxf $(APELARC)
-	cd $(APELDIR) && $(INSTALL)
-
-
 # w3m
 W3MARC:=$(shell $(FIND) . -name 'emacs-w3m*.tar.gz')
 W3MDIR:=$(call arc2dir,$(W3MARC))
@@ -38,9 +30,15 @@ $(SITELISP)/w3m: $(W3MARC)
 	tar -zxf $(W3MARC)
 	cd $(W3MDIR) && ./configure --with-emacs=$(EMACS) && $(INSTALL_W3M)
 
+# apel
+$(SITELISP)/apel: ./apel
+	cd $< && sudo make install
+
+./apel:
+	git clone https://github.com/wanderlust/apel
+
 test:
 	@echo "PREFIX:$(PREFIX)"
 	@echo "SKKDIR:$(SKKDIR)"
-	@echo "APELDIR:$(APELDIR)"
 	@echo "W3MDIR:$(W3MDIR)"
 	@echo "SHAREDIR:$(SHAREDIR)"
