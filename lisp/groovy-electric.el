@@ -128,7 +128,7 @@ have Font Lock enabled. ${ } is expanded when in a GString"
 
 (defun groovy-electric-is-last-command-char-expandable-punct-p()
   (or (memq 'all groovy-electric-expand-delimiters-list)
-      (memq last-command-event groovy-electric-expand-delimiters-list)))
+      (memq last-command-char groovy-electric-expand-delimiters-list)))
 
 (defun groovy-electric-curlies(arg)
   (interactive "P")
@@ -147,7 +147,7 @@ have Font Lock enabled. ${ } is expanded when in a GString"
   (and (groovy-electric-is-last-command-char-expandable-punct-p)
        (groovy-electric-code-at-point-p)
        (save-excursion
-		 (insert (cdr (assoc last-command-event
+		 (insert (cdr (assoc last-command-char
 							 groovy-electric-matching-delimeter-alist))))))
 
 (defun groovy-electric-pound(arg)
