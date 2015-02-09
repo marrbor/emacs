@@ -640,30 +640,6 @@
                "tar cf %s %s")))
     (shell-command (format tar tarname (mapconcat 'file-relative-name files " ")))))
 
-;; diredバッファでマークしたファイルをzip形式で圧縮する
-(defun concat-string-list (list)
-  "Return a string which is a concatenation of all elements of the list separated by spaces"
-  (mapconcat '(lambda (obj) (format "%s" obj)) list " "))
-(defun dired-zip-files (zip-file)
-  "Create an archive containing the marked files."
-  (interactive "sEnter name of zip file: ")
-  (let ((zip-file (if (string-match ".zip$" zip-file) zip-file (concat zip-file ".zip"))))
-    (shell-command
-     (concat "zip "
-             zip-file
-             " "
-             (concat-string-list
-              (mapcar
-               '(lambda (filename)
-                  (file-name-nondirectory filename))
-               (dired-get-marked-files))))))
-  (revert-buffer)
-  ;; remove the mark on all the files  "*" to " "
-  ;;  (dired-change-marks 42)
-  ;; mark zip file
-  ;; (dired-mark-files-regexp (filename-to-regexp zip-file))
-  )
-
 
 ;; ファイルを w3m で開く
 (defun dired-w3m-find-file ()
@@ -684,21 +660,3 @@
 (eval-after-load "dired"
   '(define-key dired-mode-map "\C-xt" 'dired-tar))
 
-;; eshell
-(defun eshell-mode-hook-func ()
-  (setq eshell-path-env (concat "~/Ruisdael/tools/bin:~/.gvm/groovy/current/bin:~/.gvm/vertx/current/bin:" eshell-path-env))
-  (setenv "PATH" (concat "~/Ruisdael/tools/bin:~/.gvm/groovy/current/bin:~/.gvm/vertx/current/bin:" (getenv "PATH")))
-  (define-key eshell-mode-map (kbd "M-s") 'other-window-or-split))
-
-(add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
-
-(defadvice eshell-script-interpreter (around esi activate)
-  (setq ad-return-value
-        (let ((file (ad-get-arg 0))
-              (maxlen eshell-command-interpreter-max-length))
-          (if (and (file-readable-p file)
-                   (file-regular-p file))
-              (with-temp-buffer
-                (insert-file-contents-literally file nil 0 maxlen)
-                (when (re-search-forward "^#![ \t]*\\(.+\\)$" nil t)
-                  `(,@(split-string (match-string 1)) ,file)))))))
