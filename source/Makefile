@@ -3,11 +3,11 @@ include ../Makefile.leaf
 INSTALL:=$(SUDO) make install EMACS=$(EMACS)
 INSTALL_W3M:=$(SUDO) make install-lisp EMACS=$(EMACS) lispdir=$(SITELISP)/w3m
 
-all: apel skk w3m
+all: apellisp skk w3m
 
 skk: $(SHAREDIR)/skk $(VERSITELISP)/skk
 w3m: apel $(SITELISP)/w3m
-apel: $(SITELISP)/apel
+apellisp: $(SITELISP)/apel
 
 arc2dir=$(subst .tar.gz,,$(1))
 dir2arg=$(addsuffix .tar.gz,$(1))
