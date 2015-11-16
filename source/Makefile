@@ -32,7 +32,7 @@ $(SITELISP)/w3m: $(W3MARC)
 
 # apel
 $(SITELISP)/apel: ./apel
-	cd $< && sudo make install
+	cd $< && sudo make install EMACS=/usr/local/bin/emacs
 
 ./apel:
 	git clone https://github.com/wanderlust/apel
