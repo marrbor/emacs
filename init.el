@@ -680,3 +680,9 @@
 ;(setq grep-command (cons (concat grep-command-before-query " .")
 ;                         (+ (length grep-command-before-query) 1)))
 ;
+
+;; java
+(add-hook 'java-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil)
+            (setq c-basic-offset 4)))
