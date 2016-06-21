@@ -327,6 +327,12 @@
              (require 'groovy-electric)
              (groovy-electric-mode)))
 
+;;; java
+(add-hook 'java-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode nil)
+	    (setq c-basic-offset 4)))
+
 ;;; python
 (add-to-list 'auto-mode-alist '("\.wsgi$" . python-mode))
 
@@ -674,3 +680,27 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; grep
+(define-key global-map (kbd "C-x g") 'grep)
+(require 'grep)
+(setq grep-command "grep -nH -r -e ")
+;(setq grep-command-before-query "grep -nH -r -e ")
+;(defun grep-default-command ()
+;  (if current-prefix-arg
+;      (let ((grep-command-before-target
+;             (concat grep-command-before-query
+;                     (shell-quote-argument (grep-tag-default)))))
+;        (cons (if buffer-file-name
+;                  (concat grep-command-before-target
+;                          " *."
+;                          (file-name-extension buffer-file-name))
+;                (concat grep-command-before-target " ."))
+;              (+ (length grep-command-before-target) 1)))
+;    (car grep-command)))
+;(setq grep-command (cons (concat grep-command-before-query " .")
+;                         (+ (length grep-command-before-query) 1)))
+;
+
+;;; golang
+(require 'go-mode-autoloads)

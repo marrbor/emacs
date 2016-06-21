@@ -10,7 +10,7 @@ LISPPATH:=$(ROOT)
 all:$(ELCS)
 
 %.elc: %.el
-	$(EMACS) -Q -batch -L $(LISPPATH) -f batch-byte-compile $<
+	-$(EMACS) -Q -batch -L $(LISPPATH) -f batch-byte-compile $<
 
 clean:
 	rm -f $(ELCS)
