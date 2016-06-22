@@ -321,6 +321,7 @@
 (add-to-list 'auto-mode-alist '("\.gradle$" . groovy-mode))
 (add-to-list 'interpreter-mode-alist '("\.groovy$" . groovy-mode))
 (add-to-list 'interpreter-mode-alist '("\.gradle$" . groovy-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (add-hook 'groovy-mode-hook
           '(lambda ()
@@ -704,3 +705,6 @@
 
 ;;; golang
 (require 'go-mode-autoloads)
+
+;;; yaml
+(require 'yaml-mode)
