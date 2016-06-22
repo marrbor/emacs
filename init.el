@@ -327,6 +327,12 @@
              (require 'groovy-electric)
              (groovy-electric-mode)))
 
+;;; java
+(add-hook 'java-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode nil)
+	    (setq c-basic-offset 4)))
+
 ;;; python
 (add-to-list 'auto-mode-alist '("\.wsgi$" . python-mode))
 
@@ -642,30 +648,6 @@
                "tar cf %s %s")))
     (shell-command (format tar tarname (mapconcat 'file-relative-name files " ")))))
 
-;; diredバッファでマークしたファイルをzip形式で圧縮する
-(defun concat-string-list (list)
-  "Return a string which is a concatenation of all elements of the list separated by spaces"
-  (mapconcat '(lambda (obj) (format "%s" obj)) list " "))
-(defun dired-zip-files (zip-file)
-  "Create an archive containing the marked files."
-  (interactive "sEnter name of zip file: ")
-  (let ((zip-file (if (string-match ".zip$" zip-file) zip-file (concat zip-file ".zip"))))
-    (shell-command
-     (concat "zip "
-             zip-file
-             " "
-             (concat-string-list
-              (mapcar
-               '(lambda (filename)
-                  (file-name-nondirectory filename))
-               (dired-get-marked-files))))))
-  (revert-buffer)
-  ;; remove the mark on all the files  "*" to " "
-  ;;  (dired-change-marks 42)
-  ;; mark zip file
-  ;; (dired-mark-files-regexp (filename-to-regexp zip-file))
-  )
-
 
 ;; ファイルを w3m で開く
 (defun dired-w3m-find-file ()
@@ -686,22 +668,41 @@
 (eval-after-load "dired"
   '(define-key dired-mode-map "\C-xt" 'dired-tar))
 
-;; eshell
-(defun eshell-mode-hook-func ()
-  (setq eshell-path-env (concat "~/Ruisdael/tools/bin:~/.gvm/groovy/current/bin:~/.gvm/vertx/current/bin:" eshell-path-env))
-  (setenv "PATH" (concat "~/Ruisdael/tools/bin:~/.gvm/groovy/current/bin:~/.gvm/vertx/current/bin:" (getenv "PATH")))
-  (define-key eshell-mode-map (kbd "M-s") 'other-window-or-split))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(display-time-mode t)
+ '(show-paren-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
-(add-hook 'eshell-mode-hook 'eshell-mode-hook-func)
+;; grep
+(define-key global-map (kbd "C-x g") 'grep)
+(require 'grep)
+(setq grep-command "grep -nH -r -e ")
+;(setq grep-command-before-query "grep -nH -r -e ")
+;(defun grep-default-command ()
+;  (if current-prefix-arg
+;      (let ((grep-command-before-target
+;             (concat grep-command-before-query
+;                     (shell-quote-argument (grep-tag-default)))))
+;        (cons (if buffer-file-name
+;                  (concat grep-command-before-target
+;                          " *."
+;                          (file-name-extension buffer-file-name))
+;                (concat grep-command-before-target " ."))
+;              (+ (length grep-command-before-target) 1)))
+;    (car grep-command)))
+;(setq grep-command (cons (concat grep-command-before-query " .")
+;                         (+ (length grep-command-before-query) 1)))
+;
 
-(defadvice eshell-script-interpreter (around esi activate)
-  (setq ad-return-value
-        (let ((file (ad-get-arg 0))
-              (maxlen eshell-command-interpreter-max-length))
-          (if (and (file-readable-p file)
-                   (file-regular-p file))
-              (with-temp-buffer
-                (insert-file-contents-literally file nil 0 maxlen)
-                (when (re-search-forward "^#![ \t]*\\(.+\\)$" nil t)
-                  `(,@(split-string (match-string 1)) ,file)))))))
-(put 'scroll-left 'disabled nil)
+;;; golang
+(require 'go-mode-autoloads)

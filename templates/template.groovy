@@ -1,36 +1,32 @@
-/*
+/* -*- coding: utf-8 -*-
  *   Copyright (c) Genetec Corporation. All Rights Reserved.
  */
 
 package jp.cocodayo.
 
-import jp.survei.base.BusMod
+import io.vertx.core.Future
+import io.vertx.lang.groovy.GroovyVerticle
+import io.vertx.core.logging.LoggerFactory
+import io.vertx.core.logging.Logger
 
-import org.vertx.java.core.Future
+public class %file-without-ext% extends GroovyVerticle {
 
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
+  private Logger log = LoggerFactory.getLogger(%file-without-ext%.class)
 
-// use @CompileStatic(TypeCheckingMode.SKIP) for method includes dynamic contents.
-
-@CompileStatic
-class %file-without-ext% extends BusMod {
-
-  Map spec = [:]
-
-  @Override def start(Future<Void> sr) {
-    super.start()
-    info "Boot %file-without-ext%"
-    def confresult = chkconfig(config, spec)   // verify configuration.
-    debug "chkconfig returns ${confresult}."
-    if (confresult) sr.setFailure(confresult) // something wrong.
-    else {
-      info "Start %file-without-ext%"
-      sr.setResult(null)
-    }
+  public void start(Future<Void> future) {
+    log.info "Boot %file-without-ext%"
+    vertx.deployVerticle("v.rb",
+                         { res ->
+                           if (res.succeeded()) {
+                             future.complete()
+                           } else {
+                             future.fail()
+                           }
+                         })
   }
 
-  @Override def stop() {
-    info "%file-without-ext% Stopped."
+  public void stop(Future<Void> future) {
+    log.info "Stop %file-without-ext%"
+    future.complete()
   }
 }
