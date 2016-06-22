@@ -356,6 +356,7 @@
 (add-to-list 'auto-mode-alist '("\.ns[ih]$" . nsis-mode))
 
 ;;; Git
+(setq load-path (cons "/usr/share/doc/git-1.7.1/contrib/emacs/" load-path))
 (require 'git)
 (require 'git-blame)
 
@@ -572,6 +573,7 @@
                ("\\.java$" . ["template.java" my-template])
                ("\\.json$" . ["template.json" my-template])
                ("\\.org$" . ["template.org" my-template])
+               ("\\.uml$" . ["template.uml" my-template])
                ("\\.sh$" . ["template.sh" my-template])
                ) auto-insert-alist))
 (require 'cl)
@@ -702,3 +704,4 @@
                 (insert-file-contents-literally file nil 0 maxlen)
                 (when (re-search-forward "^#![ \t]*\\(.+\\)$" nil t)
                   `(,@(split-string (match-string 1)) ,file)))))))
+(put 'scroll-left 'disabled nil)

@@ -2,7 +2,7 @@
  *   Copyright (c) Genetec Corporation. All Rights Reserved.
  */
 
-package jp.survei.
+package jp.cocodayo.
 
 import jp.survei.base.BusMod
 
@@ -16,7 +16,7 @@ import groovy.transform.TypeCheckingMode
 @CompileStatic
 class %file-without-ext% extends BusMod {
 
-  def spec = [:]
+  Map spec = [:]
 
   @Override def start(Future<Void> sr) {
     super.start()
