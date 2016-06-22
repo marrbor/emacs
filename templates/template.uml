@@ -1,0 +1,3 @@
+@startuml ./%file-without-ext%.png
+title %file-without-ext%
+@enduml
