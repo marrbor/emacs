@@ -2,6 +2,14 @@
 (setq load-path (cons "~/.emacs.d/lisp/" load-path))
 (setq load-path (cons "~/.emacs.d/elpa/company-0.9.0" load-path))
 
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list
+   'package-archives
+   '("melpa" . "http://melpa.org/packages/")
+   t)
+  (package-initialize))
+
 
 ;;; system-type predicates (http://d.hatena.ne.jp/tomoya/20090807/1249601308)
 (setq darwin-p  (eq system-type 'darwin)
