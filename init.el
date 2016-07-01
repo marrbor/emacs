@@ -1,5 +1,7 @@
 ;;;
 (setq load-path (cons "~/.emacs.d/lisp/" load-path))
+(setq load-path (cons "~/.emacs.d/elpa/company-0.9.0" load-path))
+
 
 ;;; system-type predicates (http://d.hatena.ne.jp/tomoya/20090807/1249601308)
 (setq darwin-p  (eq system-type 'darwin)
@@ -705,8 +707,33 @@
 ;                         (+ (length grep-command-before-query) 1)))
 ;
 
+;;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 ;;; golang
 (require 'go-mode-autoloads)
+
+;; Goのパスを通す
+(add-to-list 'exec-path (expand-file-name "/usr/local/go/bin/"))
+
+;; go get で入れたツールのパスを通す
+(add-to-list 'exec-path (expand-file-name "~/gopath/bin"))
+
+;; 必要なパッケージのロード
+(require 'go-mode)
+(require 'company-go)
+
+;; 諸々の有効化、設定
+;;(add-hook 'go-mode-hook 'company-mode)
+;;(add-hook 'go-mode-hook 'flycheck-mode)
+(add-hook 'go-mode-hook (lambda()
+                          (add-hook 'before-save-hook 'gofmt-before-save)
+                          (local-set-key (kbd "M-.") 'godef-jump)
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)
+                          (setq indent-tabs-mode nil)    ; タブを利用
+                          (setq c-basic-offset 4)        ; tabサイズを4にする
+                          (setq tab-width 4)))
 
 ;;; yaml
 (require 'yaml-mode)
