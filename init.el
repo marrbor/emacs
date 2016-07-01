@@ -737,3 +737,7 @@
 
 ;;; yaml
 (require 'yaml-mode)
+
+(provide 'init)
+
+;;; init.el ends here
