@@ -1,6 +1,13 @@
 ;;; package --- init
 ;;; Commentary:
 ;;; Code:
+
+;; load environment value
+(load-file (expand-file-name "~/.emacs.d/shellenv.el"))
+(dolist (path (reverse (split-string (getenv "PATH") ":")))
+  (add-to-list 'exec-path path))
+
+;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list
@@ -763,12 +770,6 @@
 
 ;;; golang
 (require 'go-mode-autoloads)
-
-;; Goのパスを通す
-(add-to-list 'exec-path (expand-file-name "/usr/local/go/bin/"))
-
-;; go get で入れたツールのパスを通す
-(add-to-list 'exec-path (expand-file-name "~/gopath/bin"))
 
 ;; 必要なパッケージのロード
 (require 'go-mode)

@@ -4,3 +4,4 @@
 /url/
 *.elc
 tramp
+shellenv.el
