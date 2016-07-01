@@ -1,34 +1,17 @@
-;;;
-(setq load-path (cons "~/.emacs.d/lisp/" load-path))
-(setq load-path (cons "~/.emacs.d/elpa/company-0.9.0" load-path))
-
+;;; package --- init
+;;; Commentary:
+;;; Code:
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list
    'package-archives
    '("melpa" . "http://melpa.org/packages/")
    t)
+;  (add-to-list
+;   'package-archives
+;   '("marmalade" . "http://marmalade-repo.org/packages/")
+;   )
   (package-initialize))
-
-
-;;; system-type predicates (http://d.hatena.ne.jp/tomoya/20090807/1249601308)
-(setq darwin-p  (eq system-type 'darwin)
-      ns-p      (eq window-system 'ns)
-      carbon-p  (eq window-system 'mac)
-      linux-p   (eq system-type 'gnu/linux)
-;      colinux-p (when linux-p
-;                  (let ((file "/proc/modules"))
-;                    (and
-;                     (file-readable-p file)
-;                     (x->bool
-;                      (with-temp-buffer
-;                        (insert-file-contents file)
-;                        (goto-char (point-min))
-;                        (re-search-forward "^cofuse\.+" nil t))))))
-      cygwin-p  (eq system-type 'cygwin)
-      nt-p      (eq system-type 'windows-nt)
-      meadow-p  (featurep 'meadow)
-      windows-p (or cygwin-p nt-p meadow-p))
 
 ;;; init.el を起動後にバイトコンパイルする
 (add-hook 'after-init-hook
@@ -99,32 +82,21 @@
                                     (110 . (no-conversion . no-conversion))
                                     (25 . (no-conversion . no-conversion))))
 
-;;; 日本語メニューの文字コード
-(setq menu-coding-system 'utf-8)
-
-;;; 日本語メニューの文字コード
-(setq menu-coding-system 'utf-8)
-
 ;;;
 (setq debug-on-error t)
 
 ;;;
 ;; font-lock
 (global-font-lock-mode t)
-;(setq font-lock-support-mode 'fast-lock-mode)
 (setq font-lock-support-mode 'jit-lock-mode)
 ; added by masahide 2003/4/28 font-lock-mode-internal cannot loaded when update emacs CVS
 (autoload 'font-lock-mode-internal "font-lock" "font-lock-mode-internal" t)
-(setq fast-lock-cache-directories '("~/.emacs.d/emacs-flc"))
 (setq auto-save-list-file-prefix "~/.emacs.d/auto-save-list/.saves-")
 (setq temporary-file-directory "~/.emacs.d/tmp")
 
 
 ;;; 時計表示
-(setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
-(setq display-time-string-forms
-      '(month "/" day "(" dayname ") " 24-hours ":" minutes))
 (display-time)
 
 ;;;ruby
@@ -140,9 +112,6 @@
 (setq line-number-mode t)
 (column-number-mode 1)
 
-;;;行番号表示
-(autoload 'setnu-mode "setnu" nil t)
-
 ;;;
 ;;; 対応括弧のハイライト化
 ;;;
@@ -156,12 +125,6 @@
 
 ;;; 行頭でのC-kは一撃で１行削除
 (setq kill-whole-line t)
-
-;;;
-;;; kill-summary
-;;;
-(autoload 'kill-summary "kill-summary" nil t)
-(define-key global-map "\ey" 'kill-summary)
 
 ;;;
 ;;; ヘルプ高速化
@@ -182,7 +145,7 @@
 ;;;
 (define-key ctl-x-map "T" 'insert-current-time-string)
 (defun insert-current-time-string ()
-  "Inserts current time string at point."
+  "Insert current time string at point."
   (interactive)
   (insert (format-time-string "%Y/%m/%d %T %z")))
 
@@ -295,7 +258,7 @@
   (define-key ctl-x-map "%" 'paren-match))
 
 ;;; ediffを別フレームにしない
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(defvar ediff-window-setup-function 'ediff-setup-windows-plain)
 
 ;;; http://pc.2ch.net/test/read.cgi/unix/1058495083/762
 ;;; cwarn.el … C/C++で怪しい部分をハイライトしてくれる。
@@ -310,20 +273,107 @@
 			(define-key text-mode-map "\M-t" '
 			  (lambda() (interactive)(insert (format-time-string "::%Y-%m-%d(%a) %H:%M" (current-time)))))))
 
-(load "ins-ref")
+;;--------------------------------------------------------------------------
+;; ins-ref.el (Version 1.02)
+;;--------------------------------------------------------------------------
+;; 説明:
+;;   マークされた所からカーソルのある行までの間の行の先頭に文字列を
+;;   いれる emacs-lisp プログラムです。メールや GUNS の引用記号を
+;;   挿入したり、lisp や C++ のコメントアウトするのに使用できます。 
+;;
+;; 「.emacs」の設定:
+;;    (setq load-path (cons ("プログラムの置場所") load-path))
+;;    (load "ins-ref")
+;; 
+;; 使い方:
+;;    [Ctrl]+[c][j] : マークをつけたところから現在のカーソル位置までの
+;;                    行の先頭に引用記号(デフォルトは" | ")を挿入します。
+;;    [Ctrl]+[c][i] : マークをつけたところから現在のカーソル位置までの
+;;                    行の先頭に指定の文字列を挿入します。
+;;    [Ctrl]+[c][d] : マークをつけたところから現在のカーソル位置までの
+;;                    矩形領域を削除します。
+;;    ※ [Ctrl]+[c][j] はコントロールキーを押しながら c を
+;;       押したあとに、j のみを押すことを示しています。
+;; 
+;; 例:
+;;   [挿入]
+;;     +---------------+    「G」のところで           +---------------+ 
+;;     |ABCDEF         |    [Ctrl]+[space] を         |ABCDEF         |
+;;     |GHIJKL         |    押してマークをつける      |// GHIJKL      |
+;;     |MNOPQR         | → カーソルを「S」に      → |// MNOPQR      |
+;;     |STUVWX         |    移動し[Ctrl]+[c][i]を     |// STUVWX      |
+;;     |YZ             |    押し「// 」を入力する。   |YZ             |
+;;     +---------------+    GUIの環境では、「G」      +---------------+
+;;                          から「S」までをドラッグ
+;;                          したあとに[Ctrl]+[c][i]
+;;                          でも可能です。
+;;
+;;   [削除]
+;;     +---------------+    「G」の行の行頭で         +---------------+ 
+;;     |ABCDEF         |    [Ctrl]+[space] を         |ABCDEF         |
+;;     |// GHIJKL      |    押してマークをつける      |GHIJKL         |
+;;     |// MNOPQR      | → カーソルを「S」に      → |MNOPQR         |
+;;     |// STUVWX      |    移動し[Ctrl]+[c][d]を     |STUVWX         |
+;;     |YZ             |    押す。                    |YZ             |
+;;     +---------------+    GUIの環境では、「G」の    +---------------+
+;;                          行頭の「/」から「S」
+;;                          までをドラッグしたあとに
+;;                          [Ctrl]+[c][d]でも可能です。
+;;
+;;--------------------------------------------------------------------------
+;;                             Copyright (C) 1994-2001 TSURUTA Mitsutoshi
+;;--------------------------------------------------------------------------
+
+;;  処理の本体
+(defun ins-ref-str (ref-str)
+  "REF-STR: 引用記号。行の頭に、引用記号をいれる."
+  (interactive "sinsert string : ")
+  (if (> (mark) (point)) (exchange-point-and-mark))
+  (save-excursion
+    (goto-char (mark))
+    (beginning-of-line)
+    (setq top_pos (point)))
+  (beginning-of-line)
+  (while (< top_pos (point))
+    (insert ref-str)
+    (previous-line 1)
+    (beginning-of-line))
+  (insert ref-str)
+)
+
+;;  何の文字列を入れるかを問い合わせないで実行する。
+;;        (ins-ref-str ....) の 文字列部分を書き換えると
+;;        その文字列を挿入するようになります。
+(defun ins-ref ()
+  "何の文字列を入れるかを問い合わせないで行の頭に、引用記号をいれる."
+  (interactive)
+  (ins-ref-str "  | ")
+)
+
+;; 矩形削除
+(defun del-ref ()
+  "矩形領域を削除する."
+  (interactive)
+  (kill-rectangle (mark) (point))
+)
+
+;;  キーの割り当て
+;;(global-set-key "\C-cj" 'ins-ref)
+(global-set-key "\C-ci" 'ins-ref-str)
+(global-set-key "\C-cd" 'del-ref)
+
+;;; define ins-ref ends here.
 
 (put 'narrow-to-region 'disabled nil)
 
 ;;;w3m
-(require 'w3m-load)
+;(require 'w3m-load)
 (setq browse-url-browser-function 'w3m-browse-url)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 
 ;;; JavaScript
-(require 'gjslint)
 (add-hook 'js-mode-hook
  	  (lambda () (flymake-mode t)))
-(setq js-indent-level 2)
 
 ;;;groovy
 (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
@@ -341,8 +391,8 @@
 ;;; java
 (add-hook 'java-mode-hook
 	  (lambda ()
-	    (setq indent-tabs-mode nil)
-	    (setq c-basic-offset 4)))
+	    (setq indent-tabs-mode nil)))
+;	    (setq c-basic-offset 4)))
 
 ;;; python
 (add-to-list 'auto-mode-alist '("\.wsgi$" . python-mode))
@@ -360,22 +410,15 @@
              (c-set-offset 'arglist-intro '+)
              (c-set-offset 'arglist-closen 0)))
 
-;;; MS-DOS
-(load-library "dosbat")
-(add-to-list 'auto-mode-alist '("\.bat$" . bat-mode))
-
-;;; Power Shell
-(require 'powershell-mode)
-(add-to-list 'auto-mode-alist '("\.ps1$" . powershell-mode))
 
 ;;; NSIS
 (autoload 'nsis-mode "nsis-mode" "nsi editing mode." t)
 (add-to-list 'auto-mode-alist '("\.ns[ih]$" . nsis-mode))
 
 ;;; Git
-(setq load-path (cons "/usr/share/doc/git-1.7.1/contrib/emacs/" load-path))
-(require 'git)
-(require 'git-blame)
+(require 'magit)
+;(require 'git)
+;(require 'git-blame)
 
 ;;; Markdown
 (autoload 'markdown-mode "markdown-mode"
@@ -390,34 +433,34 @@
 (autoload 'htmlize-file "htmlize" "Load FILE, fontify it, convert it to HTML, and save the result." t)
 
 ;;; org-mode
-(setq org-export-latex-classes nil)
-(add-to-list 'org-export-latex-classes
-	     '("report"
-	       "
-	       \\documentclass{jsarticle}
-	       \\usepackage[dvipdfmx]{graphicx}
-	       \\usepackage[utf8]{inputenc}
-	       \\usepackage[T1]{fontenc}
-	       "
-	       ("\\chapter{%s}" . "\\chapter*{%s}")
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;(setq org-export-latex-classes nil)
+;(add-to-list 'org-export-latex-classes
+;	     '("report"
+;	       "
+;	       \\documentclass{jsarticle}
+;	       \\usepackage[dvipdfmx]{graphicx}
+;	       \\usepackage[utf8]{inputenc}
+;	       \\usepackage[T1]{fontenc}
+;	       "
+;	       ("\\chapter{%s}" . "\\chapter*{%s}")
+;	       ("\\section{%s}" . "\\section*{%s}")
+;	       ("\\subsection{%s}" . "\\subsection*{%s}")
+;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-export-latex-classes
-	     '("minireport"
-	       "
-	       \\documentclass{jsarticle}
-	       \\usepackage[dvipdfmx]{graphicx}
-	       \\usepackage[utf8]{inputenc}
-	       \\usepackage[T1]{fontenc}
-	       "
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;(add-to-list 'org-export-latex-classes
+;	     '("minireport"
+;	       "
+;	       \\documentclass{jsarticle}
+;	       \\usepackage[dvipdfmx]{graphicx}
+;	       \\usepackage[utf8]{inputenc}
+;	       \\usepackage[T1]{fontenc}
+;	       "
+;	       ("\\subsection{%s}" . "\\subsection*{%s}")
+;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 ;;; org-mode ditaa
 (setq org-ditaa-jar-path (expand-file-name "~/.emacs.d/libs/ditaa/jditaa.jar"))
