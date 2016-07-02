@@ -2,11 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-;; load environment value
-(load-file (expand-file-name "~/.emacs.d/shellenv.el"))
-(dolist (path (reverse (split-string (getenv "PATH") ":")))
-  (add-to-list 'exec-path path))
-
 ;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -19,6 +14,20 @@
 ;   '("marmalade" . "http://marmalade-repo.org/packages/")
 ;   )
   (package-initialize))
+
+
+;; 環境変数をロードし、PATH については「exec-path」に入れる
+;; package-initialize より後で行うこと。
+;; https://github.com/purcell/exec-path-from-shell
+(exec-path-from-shell-initialize)
+(exec-path-from-shell-copy-env "GOROOT")
+(exec-path-from-shell-copy-env "GOPATH")
+(exec-path-from-shell-copy-env "JAVA_HOME")
+
+;; eshell に PATH を渡す
+(defvar eshell-path-env (getenv "PATH"))
+
+
 
 ;;; init.el を起動後にバイトコンパイルする
 (add-hook 'after-init-hook
@@ -169,6 +178,7 @@
 (global-set-key [up] 'previous-window-line)
 (global-set-key [down] 'next-window-line)
 (defun previous-window-line (n)
+  "N as lines have to move."
   (interactive "p")
   (let ((cur-col
 	 (- (current-column)
@@ -177,6 +187,7 @@
     (move-to-column (+ (current-column) cur-col)))
   (run-hooks 'auto-line-hook))
 (defun next-window-line (n)
+  "N as lines have to move."
   (interactive "p")
   (let ((cur-col
 	 (- (current-column)
@@ -339,11 +350,12 @@
   (save-excursion
     (goto-char (mark))
     (beginning-of-line)
-    (setq top_pos (point)))
+    (defvar ins-ref-top_pos)
+    (setq ins-ref-top_pos (point)))
   (beginning-of-line)
-  (while (< top_pos (point))
+  (while (< ins-ref-top_pos (point))
     (insert ref-str)
-    (previous-line 1)
+    (forward-line -1)
     (beginning-of-line))
   (insert ref-str)
 )
@@ -470,7 +482,7 @@
 ;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 ;;; org-mode ditaa
-(setq org-ditaa-jar-path (expand-file-name "~/.emacs.d/libs/ditaa/jditaa.jar"))
+(defvar org-ditaa-jar-path (expand-file-name "~/.emacs.d/libs/ditaa/jditaa.jar"))
 
 (add-hook 'picture-mode-hook 'picture-mode-init)
 (autoload 'picture-mode-init "picture-init")
@@ -529,7 +541,7 @@
 
 ;;; BEGIN_SRC ブロックの評価時、いちいち yes-no-p させない
 ;;; その代わり危険なコードには :eval never をつける必要がある。
-(setq org-confirm-babel-evaluate nil)
+(defvar org-confirm-babel-evaluate nil)
 
 ;;; BEGIN_SRC ブロックの評価時、ditaa か dot なら yes-no-p させない
 ;(defun my-org-confirm-babel-evaluate (lang body)
@@ -542,7 +554,7 @@
  '(;; other Babel languages
    (plantuml . t)))
 
-(setq org-plantuml-jar-path
+(defvar org-plantuml-jar-path
       (expand-file-name "~/.emacs.d/libs/plantUML/plantuml.jar"))
 
 ;;; SKK
@@ -553,7 +565,7 @@
 (global-set-key [hiragana-katakana] 'skk-mode)
 
 ;; ~/.skk にいっぱい設定を書いているのでバイトコンパイルしたい
-(setq skk-byte-compile-init-file t)
+(defvar skk-byte-compile-init-file t)
 ;; 注) 異なる種類の Emacsen を使っている場合は nil にします
 
 ;; SKK を Emacs の input method として使用する
@@ -564,12 +576,12 @@
       )
 
 ;; SKK を起動していなくても、いつでも skk-isearch を使う
-(setq skk-isearch-mode-enable 'always)
+(defvar skk-isearch-mode-enable 'always)
 
 ;; @@ 応用的な設定
 
 ;; ~/.skk* なファイルがたくさんあるので整理したい
-(setq skk-user-directory "~/.emacs.d/.ddskk")
+(defvar skk-user-directory "~/.emacs.d/.ddskk")
 
 ;; 注 1) 上記の設定をした場合、~/.skk や ~/.skk-jisyo の代わりに
 ;;       ~/.ddskk/init や ~/.ddskk/jisyo が使われます。ただし、
@@ -604,7 +616,7 @@
     (add-hook hook function)))
 
 ;; Emacs 起動時に SKK を前もってロードする
-(setq skk-preload t)
+(defvar skk-preload t)
 ;; 注) skk.el をロードするだけなら (require 'skk) でもよい。上記設定の
 ;; 場合は、skk-search-prog-list に指定された辞書もこの時点で読み込んで
 ;; 準備する。Emacs の起動は遅くなるが，SKK を使い始めるときのレスポンス
@@ -643,7 +655,6 @@
                ("\\.uml$" . ["template.uml" my-template])
                ("\\.sh$" . ["template.sh" my-template])
                ) auto-insert-alist))
-(require 'cl)
 
 ;; ここが腕の見せ所
 (defvar template-replacements-alists
@@ -652,6 +663,7 @@
     ("%include-guard%"    . (lambda () (format "_%s_INCLUDED_" (upcase (file-name-sans-extension (file-name-nondirectory buffer-file-name))))))))
 
 (defun my-template ()
+  "My template."
   (time-stamp)
   (mapc #'(lambda(c)
         (progn
@@ -689,14 +701,14 @@
 (setq dired-recursive-copies 'always)
 
 ;; diredバッファでC-sした時にファイル名だけにマッチするように
-(setq dired-isearch-filenames t)
+(defvar dired-isearch-filenames t)
 
 ;; .zipで終わるファイルをZキーで展開できるように
-(setq dired-compress-file-suffixes nil)
+(defvar dired-compress-file-suffixes nil)
 (add-to-list 'dired-compress-file-suffixes '("\\.zip\\'" ".zip" "unzip"))
 
 ;; マークされたファイルを tar. C-u をつけると tar.gz.
-(setq dired-guess-shell-gnutar "/bin/tar")
+(defvar dired-guess-shell-gnutar "/bin/tar")
 (defun dired-tar (tarname files &optional arg)
   "A dired-mode extension to archive files marked. With prefix argument, the tarball is gziped."
   (interactive (let ((files (dired-get-marked-files)))
@@ -712,6 +724,7 @@
 
 ;; ファイルを w3m で開く
 (defun dired-w3m-find-file ()
+  "ファイルを w3m で開く."
   (interactive)
   (require 'w3m)
   (let ((file (dired-get-filename)))
