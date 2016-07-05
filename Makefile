@@ -1,6 +1,6 @@
 include Makefile.leaf
 
-DIRS:=lisp source fonts libs/ditaa
+DIRS:=fonts libs/ditaa
 
 all: $(DIRS)
 
