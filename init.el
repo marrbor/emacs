@@ -19,13 +19,17 @@
 ;; 環境変数をロードし、PATH については「exec-path」に入れる
 ;; package-initialize より後で行うこと。
 ;; https://github.com/purcell/exec-path-from-shell
-(exec-path-from-shell-initialize)
-(exec-path-from-shell-copy-env "GOROOT")
-(exec-path-from-shell-copy-env "GOPATH")
-(exec-path-from-shell-copy-env "JAVA_HOME")
+(when (not (equal system-type 'windows-nt))
+  (progn
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "GOROOT")
+    (exec-path-from-shell-copy-env "GOPATH")
+    (exec-path-from-shell-copy-env "JAVA_HOME")
+    ))
 
-;; eshell に PATH を渡す
+;;; eshell に PATH を渡す
 (defvar eshell-path-env (getenv "PATH"))
+
 
 
 
@@ -606,14 +610,14 @@
 ;	    (setq skk-kutouten-type 'en)))
 
 ;; 文章系のバッファを開いた時には自動的に英数モード(「SKK」モード)に入る
-(let ((function #'(lambda ()
-		    (require 'skk)
-		    (skk-latin-mode-on))))
-  (dolist (hook '(find-file-hooks
-		  ;; ...
-		  mail-setup-hook
-		  message-setup-hook))
-    (add-hook hook function)))
+;(let ((function #'(lambda ()
+;		    (require 'skk)
+;		    (skk-latin-mode-on))))
+;  (dolist (hook '(find-file-hooks
+;		  ;; ...
+;		  mail-setup-hook
+;		  message-setup-hook))
+;    (add-hook hook function)))
 
 ;; Emacs 起動時に SKK を前もってロードする
 (defvar skk-preload t)
