@@ -71,6 +71,7 @@
 (global-set-key "\C-xm" 'browse-url-at-point)
 (global-set-key "\C-q" 'indent-region)
 (global-set-key "\C-xj" 'skk-mode)
+(global-set-key "\C-cm" 'magit-status)
 
 ;;; Font
 (if window-system (cons
