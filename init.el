@@ -407,10 +407,10 @@
 (add-to-list 'interpreter-mode-alist '("\.gradle$" . groovy-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
-(add-hook 'groovy-mode-hook
-          '(lambda ()
-             (require 'groovy-electric)
-             (groovy-electric-mode)))
+;(add-hook 'groovy-mode-hook
+;          '(lambda ()
+;             (require 'groovy-electric)
+;             (groovy-electric-mode)))
 
 ;;; java
 (add-hook 'java-mode-hook
@@ -627,6 +627,11 @@
 ;; 準備する。Emacs の起動は遅くなるが，SKK を使い始めるときのレスポンス
 ;; が軽快になる。
 
+
+;; isearch
+(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+
 ;;; markdown
 ;;; Note: GitHub Flavored Markdown は gfm-mode を使う
 (autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
@@ -690,6 +695,14 @@
   "Run cygwin bash in shell mode."
   (interactive)
   (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
+    (call-interactively 'shell)))
+
+;;; Msys Shell
+(setq explicit-bash-args '("--login" "-i"))
+(defun msys-shell ()
+  "Run msys bash in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "c:/msys64/usr/bin/bash.exe"))
     (call-interactively 'shell)))
 
 ;;; C-x C-f を便利にする
