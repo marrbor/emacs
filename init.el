@@ -825,7 +825,9 @@
 (provide 'init)
 
 ;;; addhoc for cocodayo
-(setenv "GOPATH" "/usr/local/go_appengine:$HOME/cocodayo/helium_gae_go/")
+(setenv "GOPATH"
+        (concat "/usr/local/go_appengine:"
+                (concat (getenv "HOME") "/cocodayo/helium_gae_go/")))
 
 
 ;;; init.el ends here
