@@ -19,10 +19,12 @@
 ;; 環境変数をロードし、PATH については「exec-path」に入れる
 ;; package-initialize より後で行うこと。
 ;; https://github.com/purcell/exec-path-from-shell
+
 (when (not (equal system-type 'windows-nt))
   (progn
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "GOROOT")
+    (exec-path-from-shell-copy-env "GO_APPENGINE")
     (exec-path-from-shell-copy-env "GOPATH")
     (exec-path-from-shell-copy-env "JAVA_HOME")
     ))
@@ -825,9 +827,11 @@
 (provide 'init)
 
 ;;; addhoc for cocodayo
+(setenv "GOROOT"
+        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
 (setenv "GOPATH"
-        (concat "/usr/local/go_appengine:"
-                (concat (getenv "HOME") "/cocodayo/helium_gae_go/")))
+        (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                (concat (getenv "HOME") "/cocodayo/helium_gae_go/"))))
 
 
 ;;; init.el ends here
