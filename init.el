@@ -9,10 +9,10 @@
    'package-archives
    '("melpa" . "http://melpa.org/packages/")
    t)
-;  (add-to-list
-;   'package-archives
-;   '("marmalade" . "http://marmalade-repo.org/packages/")
-;   )
+                                        ;  (add-to-list
+                                        ;   'package-archives
+                                        ;   '("marmalade" . "http://marmalade-repo.org/packages/")
+                                        ;   )
   (package-initialize))
 
 
@@ -74,6 +74,7 @@
 (global-set-key "\C-q" 'indent-region)
 (global-set-key "\C-xj" 'skk-mode)
 (global-set-key "\C-cm" 'magit-status)
+(global-set-key "\C-cn" 'hs-toggle-hiding)
 
 ;;; Font
 (if window-system (cons
@@ -112,7 +113,7 @@
 ;; font-lock
 (global-font-lock-mode t)
 (setq font-lock-support-mode 'jit-lock-mode)
-; added by masahide 2003/4/28 font-lock-mode-internal cannot loaded when update emacs CVS
+                                        ; added by masahide 2003/4/28 font-lock-mode-internal cannot loaded when update emacs CVS
 (autoload 'font-lock-mode-internal "font-lock" "font-lock-mode-internal" t)
 (setq auto-save-list-file-prefix "~/.emacs.d/auto-save-list/.saves-")
 (setq temporary-file-directory "~/.emacs.d/tmp")
@@ -243,7 +244,7 @@
 (setq query-replace-highlight t)
 
 ;;;強力な補完
-;(partial-completion-mode t)
+                                        ;(partial-completion-mode t)
 
 ;;; 以下のように .emacs に記入しておくと C-x %で対応する括弧に簡単に飛べるようになります．
 ;;; http://www.geocities.co.jp/Bookend-Soseki/1554/soft/meadow_10.html
@@ -295,8 +296,8 @@
 
 (add-hook 'text-mode-hook
           (lambda ()
-			(define-key text-mode-map "\M-t" '
-			  (lambda() (interactive)(insert (format-time-string "::%Y-%m-%d(%a) %H:%M" (current-time)))))))
+            (define-key text-mode-map "\M-t" '
+              (lambda() (interactive)(insert (format-time-string "::%Y-%m-%d(%a) %H:%M" (current-time)))))))
 
 ;;--------------------------------------------------------------------------
 ;; ins-ref.el (Version 1.02)
@@ -365,7 +366,7 @@
     (forward-line -1)
     (beginning-of-line))
   (insert ref-str)
-)
+  )
 
 ;;  何の文字列を入れるかを問い合わせないで実行する。
 ;;        (ins-ref-str ....) の 文字列部分を書き換えると
@@ -374,14 +375,14 @@
   "何の文字列を入れるかを問い合わせないで行の頭に、引用記号をいれる."
   (interactive)
   (ins-ref-str "  | ")
-)
+  )
 
 ;; 矩形削除
 (defun del-ref ()
   "矩形領域を削除する."
   (interactive)
   (kill-rectangle (mark) (point))
-)
+  )
 
 ;;  キーの割り当て
 ;;(global-set-key "\C-cj" 'ins-ref)
@@ -393,13 +394,15 @@
 (put 'narrow-to-region 'disabled nil)
 
 ;;;w3m
-;(require 'w3m-load)
+                                        ;(require 'w3m-load)
 (setq browse-url-browser-function 'w3m-browse-url)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 
 ;;; JavaScript
 (add-hook 'js-mode-hook
- 	  (lambda () (flymake-mode t)))
+ 	  '(lambda ()
+             (flymake-mode t)
+             (hs-minor-mode 1)))
 
 ;;;groovy
 (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
@@ -409,16 +412,18 @@
 (add-to-list 'interpreter-mode-alist '("\.gradle$" . groovy-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
-;(add-hook 'groovy-mode-hook
-;          '(lambda ()
-;             (require 'groovy-electric)
-;             (groovy-electric-mode)))
+(add-hook 'groovy-mode-hook
+          '(lambda ()
+                                        ;             (require 'groovy-electric)
+                                        ;             (groovy-electric-mode)))
+             (hs-minor-mode 1)))
 
 ;;; java
 (add-hook 'java-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode nil)))
-;	    (setq c-basic-offset 4)))
+	  '(lambda ()
+             (hs-minor-mode 1)
+             (setq indent-tabs-mode nil)))
+                                        ;	    (setq c-basic-offset 4)))
 
 ;;; python
 (add-to-list 'auto-mode-alist '("\.wsgi$" . python-mode))
@@ -429,6 +434,7 @@
 (add-to-list 'auto-mode-alist '("\.cs$" . csharp-mode))
 (add-hook 'csharp-mode-hook
           '(lambda ()
+             (hs-minor-mode 1)
              (setq comment-column 40)
              (setq c-basic-offset 4)
              (c-set-offset 'substatement-open 0)
@@ -443,13 +449,13 @@
 
 ;;; Git
 (require 'magit)
-;(require 'git)
-;(require 'git-blame)
+                                        ;(require 'git)
+                                        ;(require 'git-blame)
 
 ;;; Markdown
 (autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
-;(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+  "Major mode for editing Markdown files" t)
+                                        ;(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -459,34 +465,34 @@
 (autoload 'htmlize-file "htmlize" "Load FILE, fontify it, convert it to HTML, and save the result." t)
 
 ;;; org-mode
-;(setq org-export-latex-classes nil)
-;(add-to-list 'org-export-latex-classes
-;	     '("report"
-;	       "
-;	       \\documentclass{jsarticle}
-;	       \\usepackage[dvipdfmx]{graphicx}
-;	       \\usepackage[utf8]{inputenc}
-;	       \\usepackage[T1]{fontenc}
-;	       "
-;	       ("\\chapter{%s}" . "\\chapter*{%s}")
-;	       ("\\section{%s}" . "\\section*{%s}")
-;	       ("\\subsection{%s}" . "\\subsection*{%s}")
-;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                                        ;(setq org-export-latex-classes nil)
+                                        ;(add-to-list 'org-export-latex-classes
+                                        ;	     '("report"
+                                        ;	       "
+                                        ;	       \\documentclass{jsarticle}
+                                        ;	       \\usepackage[dvipdfmx]{graphicx}
+                                        ;	       \\usepackage[utf8]{inputenc}
+                                        ;	       \\usepackage[T1]{fontenc}
+                                        ;	       "
+                                        ;	       ("\\chapter{%s}" . "\\chapter*{%s}")
+                                        ;	       ("\\section{%s}" . "\\section*{%s}")
+                                        ;	       ("\\subsection{%s}" . "\\subsection*{%s}")
+                                        ;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                        ;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                        ;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-;(add-to-list 'org-export-latex-classes
-;	     '("minireport"
-;	       "
-;	       \\documentclass{jsarticle}
-;	       \\usepackage[dvipdfmx]{graphicx}
-;	       \\usepackage[utf8]{inputenc}
-;	       \\usepackage[T1]{fontenc}
-;	       "
-;	       ("\\subsection{%s}" . "\\subsection*{%s}")
-;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                                        ;(add-to-list 'org-export-latex-classes
+                                        ;	     '("minireport"
+                                        ;	       "
+                                        ;	       \\documentclass{jsarticle}
+                                        ;	       \\usepackage[dvipdfmx]{graphicx}
+                                        ;	       \\usepackage[utf8]{inputenc}
+                                        ;	       \\usepackage[T1]{fontenc}
+                                        ;	       "
+                                        ;	       ("\\subsection{%s}" . "\\subsection*{%s}")
+                                        ;	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                        ;	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                        ;	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 ;;; org-mode ditaa
 (defvar org-ditaa-jar-path (expand-file-name "~/.emacs.d/libs/ditaa/jditaa.jar"))
@@ -551,9 +557,9 @@
 (defvar org-confirm-babel-evaluate nil)
 
 ;;; BEGIN_SRC ブロックの評価時、ditaa か dot なら yes-no-p させない
-;(defun my-org-confirm-babel-evaluate (lang body)
-;  (not (or (string= lang "ditaa") (string= lang "dot"))))
-;(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+                                        ;(defun my-org-confirm-babel-evaluate (lang body)
+                                        ;  (not (or (string= lang "ditaa") (string= lang "dot"))))
+                                        ;(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
 ;; active Org-babel languages
 (org-babel-do-load-languages
@@ -562,7 +568,7 @@
    (plantuml . t)))
 
 (defvar org-plantuml-jar-path
-      (expand-file-name "~/.emacs.d/libs/plantUML/plantuml.jar"))
+  (expand-file-name "~/.emacs.d/libs/plantUML/plantuml.jar"))
 
 ;;; SKK
 ;; SKK の設定は、~/.skk の方が優先されます。
@@ -579,7 +585,7 @@
 ;;   `toggle-input-method' (C-\) で DDSKK が起動します
 (setq default-input-method
       "japanese-skk"			; (skk-mode 1)
-;;    "japanese-skk-auto-fill"		; (skk-auto-fill-mode 1)
+      ;;    "japanese-skk-auto-fill"		; (skk-auto-fill-mode 1)
       )
 
 ;; SKK を起動していなくても、いつでも skk-isearch を使う
@@ -604,23 +610,23 @@
 ;;       換える必要があります。
 
 ;; migemo を使うから skk-isearch にはおとなしくしていて欲しい
-;(setq skk-isearch-start-mode 'latin)
+                                        ;(setq skk-isearch-start-mode 'latin)
 
 ;; YaTeX のときだけ句読点を変更したい
-;(add-hook 'yatex-mode-hook
-;	  (lambda ()
-;	    (require 'skk)
-;	    (setq skk-kutouten-type 'en)))
+                                        ;(add-hook 'yatex-mode-hook
+                                        ;	  (lambda ()
+                                        ;	    (require 'skk)
+                                        ;	    (setq skk-kutouten-type 'en)))
 
 ;; 文章系のバッファを開いた時には自動的に英数モード(「SKK」モード)に入る
-;(let ((function #'(lambda ()
-;		    (require 'skk)
-;		    (skk-latin-mode-on))))
-;  (dolist (hook '(find-file-hooks
-;		  ;; ...
-;		  mail-setup-hook
-;		  message-setup-hook))
-;    (add-hook hook function)))
+                                        ;(let ((function #'(lambda ()
+                                        ;		    (require 'skk)
+                                        ;		    (skk-latin-mode-on))))
+                                        ;  (dolist (hook '(find-file-hooks
+                                        ;		  ;; ...
+                                        ;		  mail-setup-hook
+                                        ;		  message-setup-hook))
+                                        ;    (add-hook hook function)))
 
 ;; Emacs 起動時に SKK を前もってロードする
 (defvar skk-preload t)
@@ -678,12 +684,12 @@
   "My template."
   (time-stamp)
   (mapc #'(lambda(c)
-        (progn
-          (goto-char (point-min))
-;          (replace-string (car c) (funcall (cdr c)) nil)))
-          (while (re-search-forward (car c) nil t)
-            (replace-match (funcall (cdr c)) nil t))))
-    template-replacements-alists)
+            (progn
+              (goto-char (point-min))
+                                        ;          (replace-string (car c) (funcall (cdr c)) nil)))
+              (while (re-search-forward (car c) nil t)
+                (replace-match (funcall (cdr c)) nil t))))
+        template-replacements-alists)
   (goto-char (point-max))
   (message "done."))
 (add-hook 'find-file-not-found-hooks 'auto-insert)
@@ -781,22 +787,22 @@
 (define-key global-map (kbd "C-x g") 'grep)
 (require 'grep)
 (setq grep-command "grep -nH -r -e ")
-;(setq grep-command-before-query "grep -nH -r -e ")
-;(defun grep-default-command ()
-;  (if current-prefix-arg
-;      (let ((grep-command-before-target
-;             (concat grep-command-before-query
-;                     (shell-quote-argument (grep-tag-default)))))
-;        (cons (if buffer-file-name
-;                  (concat grep-command-before-target
-;                          " *."
-;                          (file-name-extension buffer-file-name))
-;                (concat grep-command-before-target " ."))
-;              (+ (length grep-command-before-target) 1)))
-;    (car grep-command)))
-;(setq grep-command (cons (concat grep-command-before-query " .")
-;                         (+ (length grep-command-before-query) 1)))
-;
+                                        ;(setq grep-command-before-query "grep -nH -r -e ")
+                                        ;(defun grep-default-command ()
+                                        ;  (if current-prefix-arg
+                                        ;      (let ((grep-command-before-target
+                                        ;             (concat grep-command-before-query
+                                        ;                     (shell-quote-argument (grep-tag-default)))))
+                                        ;        (cons (if buffer-file-name
+                                        ;                  (concat grep-command-before-target
+                                        ;                          " *."
+                                        ;                          (file-name-extension buffer-file-name))
+                                        ;                (concat grep-command-before-target " ."))
+                                        ;              (+ (length grep-command-before-target) 1)))
+                                        ;    (car grep-command)))
+                                        ;(setq grep-command (cons (concat grep-command-before-query " .")
+                                        ;                         (+ (length grep-command-before-query) 1)))
+                                        ;
 
 ;;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -813,6 +819,7 @@
 ;;(add-hook 'go-mode-hook 'company-mode)
 ;;(add-hook 'go-mode-hook 'flycheck-mode)
 (add-hook 'go-mode-hook (lambda()
+                          (hs-minor-mode 1)
                           (add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (set (make-local-variable 'company-backends) '(company-go))
@@ -831,7 +838,7 @@
         (concat (concat (getenv "GO_APPENGINE") "/goroot")))
 (setenv "GOPATH"
         (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                (concat (getenv "HOME") "/cocodayo/helium_gae_go/"))))
+                        (concat (getenv "HOME") "/cocodayo/helium_gae_go/"))))
 
 
 ;;; init.el ends here
