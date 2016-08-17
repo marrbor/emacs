@@ -835,10 +835,10 @@
 
 ;;; addhoc for cocodayo
 (setenv "GOROOT"
-        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
+        (concat (concat (getenv "GO_APPENGINE") "\\goroot")))
 (setenv "GOPATH"
-        (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/helium_gae_go/"))))
+        (concat (concat (getenv "GO_APPENGINE") "\\gopath:"
+                        (concat (getenv "HOME") "\\cocodayo\\helium_gae_go"))))
 
 
 ;;; init.el ends here
