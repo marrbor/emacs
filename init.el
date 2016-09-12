@@ -671,6 +671,7 @@
                ("\\.json$" . ["template.json" my-template])
                ("\\.org$" . ["template.org" my-template])
                ("\\.uml$" . ["template.uml" my-template])
+               ("\\.puml$" . ["template.puml" my-template])
                ("\\.sh$" . ["template.sh" my-template])
                ) auto-insert-alist))
 
@@ -814,6 +815,8 @@
 (require 'go-mode)
 (require 'company-go)
 (require 'golint)
+(require 'go-dlv)
+
 
 ;; 諸々の有効化、設定
 ;;(add-hook 'go-mode-hook 'company-mode)
@@ -838,7 +841,11 @@
         (concat (concat (getenv "GO_APPENGINE") "/goroot")))
 (setenv "GOPATH"
         (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/helium_gae_go/"))))
+                        (concat (getenv "HOME") "/cocodayo/gae_go/"))))
 
+
+;;; plantuml
+(require 'plantuml-mode)
+(add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
 ;;; init.el ends here
