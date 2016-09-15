@@ -671,6 +671,7 @@
                ("\\.json$" . ["template.json" my-template])
                ("\\.org$" . ["template.org" my-template])
                ("\\.uml$" . ["template.uml" my-template])
+               ("\\.puml$" . ["template.puml" my-template])
                ("\\.sh$" . ["template.sh" my-template])
                ) auto-insert-alist))
 
@@ -840,5 +841,8 @@
         (concat (concat (getenv "GO_APPENGINE") "\\gopath:"
                         (concat (getenv "HOME") "\\cocodayo\\helium_gae_go"))))
 
+;;; plantuml
+(require 'puml-mode)
+(add-to-list 'auto-mode-alist '("\\.puml$" . puml-mode))
 
 ;;; init.el ends here
