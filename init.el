@@ -842,7 +842,7 @@
                         (concat (getenv "HOME") "\\cocodayo\\helium_gae_go"))))
 
 ;;; plantuml
-(require 'puml-mode)
-(add-to-list 'auto-mode-alist '("\\.puml$" . puml-mode))
+(require 'plantuml-mode)
+(add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
 ;;; init.el ends here
