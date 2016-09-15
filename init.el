@@ -839,7 +839,7 @@
         (concat (concat (getenv "GO_APPENGINE") "\\goroot")))
 (setenv "GOPATH"
         (concat (concat (getenv "GO_APPENGINE") "\\gopath:"
-                        (concat (getenv "HOME") "\\cocodayo\\helium_gae_go"))))
+                        (concat (getenv "HOME") "\\cocodayo\\gae_go"))))
 
 ;;; plantuml
 (require 'plantuml-mode)
