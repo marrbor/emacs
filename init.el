@@ -813,19 +813,22 @@
 
 ;; 必要なパッケージのロード
 (require 'go-mode)
+(require 'go-autocomplete)
 (require 'company-go)
 (require 'golint)
 (require 'go-dlv)
-
+(require 'go-eldoc)
+(defun auto-complete-for-go ()
+  (auto-complete-mode 1))
 
 ;; 諸々の有効化、設定
-;;(add-hook 'go-mode-hook 'company-mode)
-;;(add-hook 'go-mode-hook 'flycheck-mode)
 (add-hook 'go-mode-hook (lambda()
                           (hs-minor-mode 1)
                           (add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (set (make-local-variable 'company-backends) '(company-go))
+                          (go-eldoc-setup)
+                          (auto-complete-for-go)
                           (company-mode)
                           (setq indent-tabs-mode nil)    ; タブを利用
                           (setq c-basic-offset 4)        ; tabサイズを4にする
