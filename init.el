@@ -848,4 +848,21 @@
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
+;;; theme
+;(load-theme 'adwaita t)
+;(load-theme 'deeper-blue t)
+;(load-theme 'dichromacy t)
+;(load-theme 'light-blue t)
+;(load-theme 'manoj-dark t)
+(load-theme 'misterioso t)
+;(load-theme 'tango t)
+;(load-theme 'tango-dark t)
+;;(load-theme 'tsdh-dark t)
+;(load-theme 'tsdh-light t)
+;;(load-theme 'wheatgrass t)
+;(load-theme 'whiteboard t)
+;(load-theme 'wombat t)
+
+
+
 ;;; init.el ends here
