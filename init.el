@@ -819,6 +819,7 @@
 (require 'go-dlv)
 (require 'go-eldoc)
 (defun auto-complete-for-go ()
+  "Enable autocomplete at go lang mode."
   (auto-complete-mode 1))
 
 ;; 諸々の有効化、設定
