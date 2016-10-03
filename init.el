@@ -75,6 +75,7 @@
 (global-set-key "\C-xj" 'skk-mode)
 (global-set-key "\C-cm" 'magit-status)
 (global-set-key "\C-cn" 'hs-toggle-hiding)
+(global-set-key "\C-cg" 'grep)
 
 ;;; Font
 (if window-system (cons
@@ -866,7 +867,9 @@
 ;;(load-theme 'wheatgrass t)
 ;(load-theme 'whiteboard t)
 ;(load-theme 'wombat t)
+(set-cursor-color "#ffffff")
 
-
+(require 'twittering-mode)
+(setq twittering-use-master-password t)
 
 ;;; init.el ends here
