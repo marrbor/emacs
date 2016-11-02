@@ -453,13 +453,6 @@
                                         ;(require 'git)
                                         ;(require 'git-blame)
 
-;;; Markdown
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-                                        ;(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
 ;;; HTMLIZE
 (autoload 'htmlize-buffer "htmlize" "Convert BUFFER to HTML, preserving colors and decorations." t)
 (autoload 'htmlize-region "htmlize" "Convert the region to HTML, preserving colors and decorations." t)
@@ -641,10 +634,21 @@
 (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
 (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
 
-;;; markdown
-;;; Note: GitHub Flavored Markdown は gfm-mode を使う
-(autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
+;;; Markdown
+;;; http://cloverrose.hateblo.jp/entry/2014/11/03/220452
+;;; markdownモード（gfm-mode Github flavor markdown mode）を拡張子と関連付けする
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+
+;; ファイル内容を標準入力で渡すのではなく、ファイル名を引数として渡すように設定
+(defun markdown-custom ()
+  "Markdown-mode-hook."
+  (setq markdown-command-needs-filename t)
+  )
+(add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 
 ;;; Makfile mode
 (add-to-list 'auto-mode-alist '("Makefile\\..*$" . makefile-gmake-mode))
@@ -846,7 +850,13 @@
         (concat (concat (getenv "GO_APPENGINE") "/goroot")))
 (setenv "GOPATH"
         (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/gae_go/"))))
+                        (concat (getenv "HOME") "/cocodayo/helium/gae_go:")
+                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer:")
+                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer/common:")
+                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer/model:")
+                        (concat (getenv "HOME") "/cocodayo/helium/eew_testserver:")
+                        (concat (getenv "HOME") "/cocodayo/helium/gae_rgeo:")
+                        (concat (getenv "HOME") "/cocodayo/helium/gae_shelter"))))
 
 
 ;;; plantuml
