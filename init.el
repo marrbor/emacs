@@ -845,20 +845,6 @@
 
 (provide 'init)
 
-;;; addhoc for cocodayo
-(setenv "GOROOT"
-        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
-(setenv "GOPATH"
-        (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/helium/gae_go:")
-                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer:")
-                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer/common:")
-                        (concat (getenv "HOME") "/cocodayo/helium/eew_relayer/model:")
-                        (concat (getenv "HOME") "/cocodayo/helium/eew_testserver:")
-                        (concat (getenv "HOME") "/cocodayo/helium/gae_rgeo:")
-                        (concat (getenv "HOME") "/cocodayo/helium/gae_shelter"))))
-
-
 ;;; plantuml
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
@@ -881,5 +867,61 @@
 
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
+
+
+;;; addhoc for cocodayo
+(setenv "GOROOT"
+        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
+
+(defun set-gopath-for-gae-go ()
+  "Set gopath for gae-go."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/helium/gae_go")))))
+
+(defun set-gopath-for-operation ()
+  "Set gopath for operation."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/operation")))))
+
+(defun set-gopath-for-eew-relayer ()
+  "Set gopath for eew-relayer."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/helium/eew_relayer")))))
+
+(defun set-gopath-for-eew-testserver ()
+  "Set gopath for eew-testserver."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/helium/eew_testserver")))))
+
+(defun set-gopath-for-gae-rgeo ()
+  "Set gopath for gae-rgeo."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/helium/gae_rgeo")))))
+
+(defun set-gopath-for-gae-shelter ()
+  "Set gopath for gae-shelter."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                        (concat (getenv "HOME") "/cocodayo/helium/gae_shelter")))))
+
+(defun set-gopath-for-gae-resource ()
+  "Set gopath for gae-resource."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                        (concat (getenv "HOME") "/cocodayo/helium/gae_resource")))))
+
+
 
 ;;; init.el ends here
