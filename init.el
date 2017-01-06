@@ -16,19 +16,6 @@
   (package-initialize))
 
 
-;; 環境変数をロードし、PATH については「exec-path」に入れる
-;; package-initialize より後で行うこと。
-;; https://github.com/purcell/exec-path-from-shell
-
-(when (not (equal system-type 'windows-nt))
-  (progn
-    (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "GOROOT")
-    (exec-path-from-shell-copy-env "GO_APPENGINE")
-    (exec-path-from-shell-copy-env "GOPATH")
-    (exec-path-from-shell-copy-env "JAVA_HOME")
-    ))
-
 ;;; eshell に PATH を渡す
 (defvar eshell-path-env (getenv "PATH"))
 
@@ -77,20 +64,6 @@
 (global-set-key "\C-cn" 'hs-toggle-hiding)
 (global-set-key "\C-cg" 'grep)
 
-;;; Font
-(if window-system (cons
-		   (set-face-attribute 'default nil
-				       :family "Ricty Discord"
-				       :height 120)
-		   (set-fontset-font (frame-parameter nil 'font)
-				     'japanese-jisx0208
-				     (cons "Ricty Discord" "iso10646-1"))
-		   (set-fontset-font (frame-parameter nil 'font)
-				     'japanese-jisx0212
-				     (cons "Ricty Discord" "iso10646-1"))
-		   (set-fontset-font (frame-parameter nil 'font)
-				     'katakana-jisx0201
-				     (cons "Ricty Discord" "iso10646-1"))))
 
 ;;; 長いリストの表示を省略する(数字:MAXの数(default:12)、nil:省略しない)
 (setq eval-expression-print-length nil)
@@ -781,6 +754,9 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(display-time-mode t)
+ '(package-selected-packages
+   (quote
+    (markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -814,7 +790,7 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;;; golang
-(require 'go-mode-autoloads)
+;(require 'go-mode-autoloads)
 
 ;; 必要なパッケージのロード
 (require 'go-mode)
@@ -864,10 +840,6 @@
 ;(load-theme 'whiteboard t)
 ;(load-theme 'wombat t)
 (set-cursor-color "#ffffff")
-
-(require 'twittering-mode)
-(setq twittering-use-master-password t)
-
 
 ;;; addhoc for cocodayo
 (setenv "GOROOT"
