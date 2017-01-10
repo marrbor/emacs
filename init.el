@@ -16,11 +16,11 @@
   (package-initialize))
 
 
+;;; import PATH
+(exec-path-from-shell-initialize)
+
 ;;; eshell に PATH を渡す
 (defvar eshell-path-env (getenv "PATH"))
-
-
-
 
 ;;; init.el を起動後にバイトコンパイルする
 (add-hook 'after-init-hook
@@ -619,7 +619,7 @@
 ;; ファイル内容を標準入力で渡すのではなく、ファイル名を引数として渡すように設定
 (defun markdown-custom ()
   "Markdown-mode-hook."
-  (setq markdown-command-needs-filename t)
+  (defvar markdown-command-needs-filename t)
   )
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 
@@ -795,6 +795,7 @@
 ;; 必要なパッケージのロード
 (require 'go-mode)
 (require 'go-autocomplete)
+(require 'auto-complete-config)
 (require 'company-go)
 (require 'golint)
 (require 'go-dlv)
@@ -842,6 +843,8 @@
 (set-cursor-color "#ffffff")
 
 ;;; addhoc for cocodayo
+(setenv "GO_APPENGINE" (concat (getenv "HOME") "/tools/go_appengine"))
+
 (setenv "GOROOT"
         (concat (concat (getenv "GO_APPENGINE") "/goroot")))
 
@@ -850,7 +853,7 @@
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/helium/gae_go")))))
+                          (concat (getenv "HOME") "/cocodayo/gae_go")))))
 
 (defun set-gopath-for-operation ()
   "Set gopath for operation."
@@ -864,35 +867,35 @@
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/helium/eew_relayer")))))
+                          (concat (getenv "HOME") "/cocodayo/eew_relayer")))))
 
 (defun set-gopath-for-eew-testserver ()
   "Set gopath for eew-testserver."
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/helium/eew_testserver")))))
+                          (concat (getenv "HOME") "/cocodayo/eew_testserver")))))
 
 (defun set-gopath-for-gae-rgeo ()
   "Set gopath for gae-rgeo."
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/helium/gae_rgeo")))))
+                          (concat (getenv "HOME") "/cocodayo/gae_rgeo")))))
 
 (defun set-gopath-for-gae-shelter ()
   "Set gopath for gae-shelter."
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/helium/gae_shelter")))))
+                        (concat (getenv "HOME") "/cocodayo/gae_shelter")))))
 
 (defun set-gopath-for-gae-resource ()
   "Set gopath for gae-resource."
   (interactive)
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/helium/gae_resource")))))
+                        (concat (getenv "HOME") "/cocodayo/gae_resource")))))
 
 
 
