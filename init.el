@@ -64,6 +64,8 @@
 (global-set-key "\C-cn" 'hs-toggle-hiding)
 (global-set-key "\C-cg" 'grep)
 
+;;; ￥キーでバックスラッシュを入力
+(define-key global-map [?¥] [?\\])
 
 ;;; 長いリストの表示を省略する(数字:MAXの数(default:12)、nil:省略しない)
 (setq eval-expression-print-length nil)
@@ -809,6 +811,7 @@
                           (hs-minor-mode 1)
                           (add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
+                          (local-set-key (kbd "M-*") 'pop-tag-mark)
                           (set (make-local-variable 'company-backends) '(company-go))
                           (go-eldoc-setup)
                           (auto-complete-for-go)
