@@ -879,7 +879,12 @@
   (setenv "GOPATH"
           (concat (concat (getenv "GO_APPENGINE") "/gopath:"
                           (concat (getenv "HOME") "/cocodayo/gae_go")))))
-
+(defun set-gopath-for-trellohub ()
+  "Set gopath for gae-go."
+  (interactive)
+  (setenv "GOPATH"
+          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+                          (concat (getenv "HOME") "/cocodayo/TorelloHub")))))
 (defun set-gopath-for-operation ()
   "Set gopath for operation."
   (interactive)
