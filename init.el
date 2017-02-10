@@ -82,6 +82,8 @@
                                     (110 . (no-conversion . no-conversion))
                                     (25 . (no-conversion . no-conversion))))
 
+(require 'smooth-scroll)
+(smooth-scroll-mode t)
 ;;;
 (setq debug-on-error t)
 
@@ -758,7 +760,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
+    (smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -828,6 +830,19 @@
 ;;; plantuml
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
+
+;;; hl-line
+(require 'hl-line)
+;;; hl-lineを無効にするメジャーモードを指定する
+(defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
+(defun global-hl-line-timer-function ()
+  (unless (memq major-mode global-hl-line-timer-exclude-modes)
+    (global-hl-line-unhighlight-all)
+    (let ((global-hl-line-mode t))
+      (global-hl-line-highlight))))
+(setq global-hl-line-timer
+      (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
+;; (cancel-timer global-hl-line-timer)
 
 ;;; theme
 ;(load-theme 'adwaita t)
