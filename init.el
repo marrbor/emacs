@@ -832,6 +832,7 @@
 (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
 ;;; hl-line
+;;; http://emacs.rubikitch.com/global-hl-line-mode-timer/
 (require 'hl-line)
 ;;; hl-lineを無効にするメジャーモードを指定する
 (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
