@@ -60,7 +60,7 @@
 (global-set-key "\C-xm" 'browse-url-at-point)
 ;(global-set-key "\C-q" 'indent-region)
 (global-set-key "\C-q" 'backward-word)
-(global-set-key "\C-d" 'forward-word)
+(global-set-key "\C-r" 'forward-word)
 (global-set-key "\C-xj" 'skk-mode)
 (global-set-key "\C-cm" 'magit-status)
 (global-set-key "\C-cn" 'hs-toggle-hiding)
