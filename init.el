@@ -58,7 +58,9 @@
 (global-unset-key "\C-]")
 (global-unset-key "\C-z")
 (global-set-key "\C-xm" 'browse-url-at-point)
-(global-set-key "\C-q" 'indent-region)
+;(global-set-key "\C-q" 'indent-region)
+(global-set-key "\C-q" 'backward-word)
+(global-set-key "\C-d" 'forward-word)
 (global-set-key "\C-xj" 'skk-mode)
 (global-set-key "\C-cm" 'magit-status)
 (global-set-key "\C-cn" 'hs-toggle-hiding)
@@ -113,11 +115,6 @@
 ;;; カラム数表示
 (setq line-number-mode t)
 (column-number-mode 1)
-
-;;;
-;;; 対応括弧のハイライト化
-;;;
-(show-paren-mode 1)
 
 ;;; 新規行自動作成:オフ
 (setq next-line-add-newlines nil)
@@ -215,11 +212,6 @@
 
 ;;;C-hv とかファイル名補完時のウィンドウを自動的にリサイズする。
 (temp-buffer-resize-mode t)
-
-;;;検索とかリージョンを色付きに。
-(setq transient-mark-mode t)
-(setq search-highlight t)
-(setq query-replace-highlight t)
 
 ;;;強力な補完
                                         ;(partial-completion-mode t)
@@ -831,16 +823,53 @@
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
 
+
+;;;;;;
+;;;;;; ハイライト
+;;;;;; http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035
+
+;;; 対応括弧のハイライト
+(show-paren-mode 1)
+;(setq show-paren-style 'parenthesis) ; 括弧のみ
+;(setq show-paren-style 'expression) ; 括弧で囲まれた部分
+(setq show-paren-style 'mixed) ; 画面内に対応する括弧がある場合は括弧だけを，ない場合は括弧で囲まれた部分をハイライト
+
+
+;;;検索とかリージョンを色付きに。
+(setq transient-mark-mode t)
+(setq search-highlight t)
+(setq query-replace-highlight t)
+
+;;; カーソル行ハイライト
 ;;; hl-line
 ;;; http://emacs.rubikitch.com/global-hl-line-mode-timer/
+
+;; ハイライト
+(defface hlline-face
+  '((((class color)
+      (background dark))
+     ;;(:background "blue"))
+     ;;(:background "blue3"))
+     (:background "dark slate gray"))
+    (((class color)
+      (background light))
+                                        ;     (:background "ForestGreen"))
+          (:background "DarkBlue"))
+    (t
+     ()))
+  "*Face used by hl-line.")
+
 (require 'hl-line)
+(setq hl-line-face 'hlline-face)
+(global-hl-line-mode 1)
+(set-face-attribute hl-line-face nil :underline t)
 ;;; hl-lineを無効にするメジャーモードを指定する
 (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
 (defun global-hl-line-timer-function ()
   (unless (memq major-mode global-hl-line-timer-exclude-modes)
-    (global-hl-line-unhighlight-all)
-    (let ((global-hl-line-mode t))
-      (global-hl-line-highlight))))
+    (global-hl-line-unhighlight-all))
+    (let ((global-hl-line-mode nil))
+      (global-hl-line-highlight)))
 (setq global-hl-line-timer
       (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
 ;; (cancel-timer global-hl-line-timer)
