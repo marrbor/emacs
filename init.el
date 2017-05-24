@@ -60,7 +60,7 @@
 (global-set-key "\C-xm" 'browse-url-at-point)
 ;(global-set-key "\C-q" 'indent-region)
 (global-set-key "\C-q" 'backward-word)
-(global-set-key "\C-r" 'forward-word)
+;(global-set-key "\C-r" 'forward-word)
 (global-set-key "\C-xj" 'skk-mode)
 (global-set-key "\C-cm" 'magit-status)
 (global-set-key "\C-cn" 'hs-toggle-hiding)
@@ -619,6 +619,10 @@
   )
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 
+;;; http://qiita.com/gooichi/items/2b185dbdf24166a15ca4
+(defvar markdown-command "multimarkdown")
+
+
 ;;; Makfile mode
 (add-to-list 'auto-mode-alist '("Makefile\\..*$" . makefile-gmake-mode))
 (add-to-list 'auto-mode-alist '("Makefile_.*$" . makefile-gmake-mode))
@@ -862,7 +866,7 @@
 (require 'hl-line)
 (setq hl-line-face 'hlline-face)
 (global-hl-line-mode 1)
-(set-face-attribute hl-line-face nil :underline t)
+(set-face-attribute hl-line-face nil :underline nil)
 ;;; hl-lineを無効にするメジャーモードを指定する
 (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
 (defun global-hl-line-timer-function ()
