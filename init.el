@@ -894,67 +894,73 @@
 ;(load-theme 'wombat t)
 (set-cursor-color "#ffffff")
 
-;;; addhoc for cocodayo
-(setenv "GO_APPENGINE" (concat (getenv "HOME") "/tools/go_appengine"))
-
-(setenv "GOROOT"
-        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
+;;; 環境変数
+;;; http://emacs-jp.github.io/tips/environment-variable
+(setenv "GOPATH" (concat (concat (getenv "HOME") "/gopath")))
 
 (defun set-gopath-for-gae-go ()
   "Set gopath for gae-go."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/gae_go")))))
+          (concat  (concat (getenv "HOME") "/gopath:")
+                   (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
+                           (concat (getenv "HOME") "/cocodayo/gae_go")))))
 
 (defun set-gopath-for-trellohub ()
   "Set gopath for gae-go."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/TorelloHub")))))
+          (concat  (concat (getenv "HOME") "/gopath:")
+                   (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
+                           (concat (getenv "HOME") "/cocodayo/TorelloHub")))))
 
 (defun set-gopath-for-operation ()
   "Set gopath for operation."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")                         
                           (concat (getenv "HOME") "/cocodayo/operation")))))
 
 (defun set-gopath-for-eew-relayer ()
   "Set gopath for eew-relayer."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
                           (concat (getenv "HOME") "/cocodayo/eew_relayer")))))
 
 (defun set-gopath-for-eew-testserver ()
   "Set gopath for eew-testserver."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
                           (concat (getenv "HOME") "/cocodayo/eew_testserver")))))
 
 (defun set-gopath-for-gae-rgeo ()
   "Set gopath for gae-rgeo."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
                           (concat (getenv "HOME") "/cocodayo/gae_rgeo")))))
 
 (defun set-gopath-for-gae-shelter ()
   "Set gopath for gae-shelter."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/gae_shelter")))))
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
+                          (concat (getenv "HOME") "/cocodayo/gae_shelter")))))
 
 (defun set-gopath-for-gae-resource ()
   "Set gopath for gae-resource."
   (interactive)
   (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/gae_resource")))))
+          (concat (concat (getenv "HOME") "/gopath:")
+                  (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
+                          (concat (getenv "HOME") "/cocodayo/gae_resource")))))
 
 
 
