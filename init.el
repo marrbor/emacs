@@ -23,8 +23,6 @@
 (when (not (equal system-type 'windows-nt))
   (progn
     (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "GOROOT")
-    (exec-path-from-shell-copy-env "GO_APPENGINE")
     (exec-path-from-shell-copy-env "GOPATH")
     (exec-path-from-shell-copy-env "JAVA_HOME")
     ))
@@ -868,65 +866,54 @@
 (require 'twittering-mode)
 (setq twittering-use-master-password t)
 
+;;; set-gopath
+(defun set-gopath (component)
+  "Set gopath.  COMPONENT: cocodayo component name."
+  (setenv "GOPATH"
+          (concat (concat (getenv "HOME") "/gopath:"
+                          (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
+                          (concat (getenv "HOME") (concat "/cocodayo/" component)))))))
 
 ;;; addhoc for cocodayo
-(setenv "GOROOT"
-        (concat (concat (getenv "GO_APPENGINE") "/goroot")))
-
 (defun set-gopath-for-gae-go ()
   "Set gopath for gae-go."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/gae_go")))))
+  (set-gopath "gae_go"))
+
 (defun set-gopath-for-trellohub ()
-  "Set gopath for gae-go."
+  "Set gopath for Trellohub."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/TorelloHub")))))
+  (set-gopath "TorelloHub"))
+
 (defun set-gopath-for-operation ()
   "Set gopath for operation."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/operation")))))
+  (set-gopath "operation"))
 
 (defun set-gopath-for-eew-relayer ()
   "Set gopath for eew-relayer."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/eew_relayer")))))
+  (set-gopath "eew_relayer"))
 
 (defun set-gopath-for-eew-testserver ()
   "Set gopath for eew-testserver."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/eew_testserver")))))
+  (set-gopath "eew_testserver"))
 
 (defun set-gopath-for-gae-rgeo ()
   "Set gopath for gae-rgeo."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                          (concat (getenv "HOME") "/cocodayo/gae_rgeo")))))
+  (set-gopath "gae_rgeo"))
 
 (defun set-gopath-for-gae-shelter ()
   "Set gopath for gae-shelter."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/gae_shelter")))))
+  (set-gopath "gae_shelter"))
 
 (defun set-gopath-for-gae-resource ()
   "Set gopath for gae-resource."
   (interactive)
-  (setenv "GOPATH"
-          (concat (concat (getenv "GO_APPENGINE") "/gopath:"
-                        (concat (getenv "HOME") "/cocodayo/gae_resource")))))
-
+  (set-gopath "gae_resource"))
 
 
 ;;; init.el ends here
