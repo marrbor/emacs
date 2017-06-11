@@ -871,8 +871,7 @@
   "Set gopath.  COMPONENT: cocodayo component name."
   (setenv "GOPATH"
           (concat (concat (getenv "HOME") "/gopath:"
-                          (concat (concat (getenv "HOME") "/tools/google-cloud-sdk/platform/google_appengine/goroot:")
-                          (concat (getenv "HOME") (concat "/cocodayo/" component)))))))
+                          (concat (getenv "HOME") (concat "/cocodayo/" component))))))
 
 ;;; addhoc for cocodayo
 (defun set-gopath-for-gae-go ()
