@@ -644,7 +644,7 @@
 ;; ファイル内容を標準入力で渡すのではなく、ファイル名を引数として渡すように設定
 (defun markdown-custom ()
   "Markdown-mode-hook."
-  (setq markdown-command-needs-filename t)
+  (defvar markdown-command-needs-filename t)
   )
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 
@@ -740,7 +740,7 @@
 ;; マークされたファイルを tar. C-u をつけると tar.gz.
 (defvar dired-guess-shell-gnutar "/bin/tar")
 (defun dired-tar (tarname files &optional arg)
-  "A dired-mode extension to archive files marked. With prefix argument, the tarball is gziped."
+  "A dired-mode extension to archive files marked. With prefix argument, the tarball is gziped.  "
   (interactive (let ((files (dired-get-marked-files)))
                  (list (read-string "Tarball name: " (concat (file-relative-name (car files)) ".tar.gz"))
                        files "P")))
