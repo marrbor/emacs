@@ -244,7 +244,7 @@
     (let ((com (getcom arg)))
       (if (numberp arg)
 	  (if (or (> arg 99) (< arg 1))
-	      (error "Prefix must be between 1 and 99.")
+	      (error "Prefix must be between 1 and 99")
 	    (goto-char
 	     (if (> (point-max) 80000)
 		 (* (/ (point-max) 100) arg)
@@ -286,7 +286,7 @@
 ;; 説明:
 ;;   マークされた所からカーソルのある行までの間の行の先頭に文字列を
 ;;   いれる emacs-lisp プログラムです。メールや GUNS の引用記号を
-;;   挿入したり、lisp や C++ のコメントアウトするのに使用できます。 
+;;   挿入したり、lisp や C++ のコメントアウトするのに使用できます。
 ;;
 ;; 「.emacs」の設定:
 ;;    (setq load-path (cons ("プログラムの置場所") load-path))
@@ -304,7 +304,7 @@
 ;; 
 ;; 例:
 ;;   [挿入]
-;;     +---------------+    「G」のところで           +---------------+ 
+;;     +---------------+    「G」のところで           +---------------+
 ;;     |ABCDEF         |    [Ctrl]+[space] を         |ABCDEF         |
 ;;     |GHIJKL         |    押してマークをつける      |// GHIJKL      |
 ;;     |MNOPQR         | → カーソルを「S」に      → |// MNOPQR      |
@@ -316,7 +316,7 @@
 ;;                          でも可能です。
 ;;
 ;;   [削除]
-;;     +---------------+    「G」の行の行頭で         +---------------+ 
+;;     +---------------+    「G」の行の行頭で         +---------------+
 ;;     |ABCDEF         |    [Ctrl]+[space] を         |ABCDEF         |
 ;;     |// GHIJKL      |    押してマークをつける      |GHIJKL         |
 ;;     |// MNOPQR      | → カーソルを「S」に      → |MNOPQR         |
@@ -726,7 +726,7 @@
 ;; マークされたファイルを tar. C-u をつけると tar.gz.
 (defvar dired-guess-shell-gnutar "/bin/tar")
 (defun dired-tar (tarname files &optional arg)
-  "A dired-mode extension to archive files marked. With prefix argument, the tarball is gziped."
+  "A 'dired-mode' extension to archive files marked.  TARNAME is file name.  FILES is list of file.  With prefix argument(ARG), the tarball is gziped."
   (interactive (let ((files (dired-get-marked-files)))
                  (list (read-string "Tarball name: " (concat (file-relative-name (car files)) ".tar.gz"))
                        files "P")))
@@ -744,7 +744,7 @@
   (interactive)
   (require 'w3m)
   (let ((file (dired-get-filename)))
-    (if (y-or-n-p (format "Open 'w3m' %s " (file-name-nondirectory file)))
+    (if (y-or-n-p (format "Open 'w3m' %s? " (file-name-nondirectory file)))
         (w3m-find-file file))))
 
 
@@ -847,7 +847,7 @@
 (show-paren-mode 1)
 ;(setq show-paren-style 'parenthesis) ; 括弧のみ
 ;(setq show-paren-style 'expression) ; 括弧で囲まれた部分
-(setq show-paren-style 'mixed) ; 画面内に対応する括弧がある場合は括弧だけを，ない場合は括弧で囲まれた部分をハイライト
+(defvar show-paren-style 'mixed) ; 画面内に対応する括弧がある場合は括弧だけを，ない場合は括弧で囲まれた部分をハイライト
 
 
 ;;;検索とかリージョンを色付きに。
@@ -881,11 +881,12 @@
 ;;; hl-lineを無効にするメジャーモードを指定する
 (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
 (defun global-hl-line-timer-function ()
+  "A function set major mode name for uneffected hl-line."
   (unless (memq major-mode global-hl-line-timer-exclude-modes)
     (global-hl-line-unhighlight-all))
     (let ((global-hl-line-mode nil))
       (global-hl-line-highlight)))
-(setq global-hl-line-timer
+(defvar global-hl-line-timer
       (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
 ;; (cancel-timer global-hl-line-timer)
 
