@@ -16,6 +16,17 @@
   (package-initialize))
 
 
+;; http://www-he.scphys.kyoto-u.ac.jp/member/shotakaha/dokuwiki/doku.php?id=toolbox:emacs:package:start
+
+;; load-path を設定
+(setq load-path (cons "~/.emacs.d/elisp" load-path))
+;; auto-installを使えるように設定
+(require 'auto-install)
+(auto-install-compatibility-setup)    ; install-elispとの互換性確保
+;; auto-installを使ったファイルのインストール先の設定
+(setq auto-install-directory "~/.emacs.d/elisp/")    ; auto-installをelispに変更
+(auto-install-update-emacswiki-package-name t)
+
 ;;; import PATH
 (exec-path-from-shell-initialize)
 
@@ -756,7 +767,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
+    (auto-install ac-php php-auto-yasnippets php-mode smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -963,5 +974,23 @@
                           (concat (getenv "HOME") "/cocodayo/gae_resource")))))
 
 
+;;; PHP
+(require 'php-mode)
+
+;; php-mode-hook
+;(add-hook 'php-mode-hook
+;          (lambda ()
+;            (require 'php-completion)
+;            (php-completion-mode t)
+;            (define-key php-mode-map (kbd "C-o") 'phpcmp-complete)
+;            (make-local-variable 'ac-sources)
+;            (setq ac-sources '(
+;                               ac-source-words-in-same-mode-buffers
+;                               ac-source-php-completion
+;                               ac-source-filename
+;                               ))))
+
+
+(autoload 'seimei "seimei" "seimei" t)
 
 ;;; init.el ends here
