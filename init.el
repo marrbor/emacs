@@ -423,6 +423,9 @@
              (c-set-offset 'arglist-intro '+)
              (c-set-offset 'arglist-closen 0)))
 
+;;; typescript
+(autoload 'typescript-mode "typescript-mode" "Major mode for editing Typescript code." t)
+(add-to-list 'auto-mode-alist '("\.ts$" . typescript-mode))
 
 ;;; NSIS
 (autoload 'nsis-mode "nsis-mode" "nsi editing mode." t)
@@ -662,6 +665,7 @@
                ("\\.uml$" . ["template.uml" my-template])
                ("\\.puml$" . ["template.puml" my-template])
                ("\\.sh$" . ["template.sh" my-template])
+               ("\\.go$" . ["template.go" my-template])
                ) auto-insert-alist))
 
 ;; ここが腕の見せ所
@@ -767,7 +771,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (auto-install ac-php php-auto-yasnippets php-mode smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
+    (typescript-mode auto-install ac-php php-auto-yasnippets php-mode smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
