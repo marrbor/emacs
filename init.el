@@ -81,7 +81,7 @@
 (if window-system (cons
 		   (set-face-attribute 'default nil
 				       :family "Ricty Discord"
-				       :height 120)
+				       :height 180)
 		   (set-fontset-font (frame-parameter nil 'font)
 				     'japanese-jisx0208
 				     (cons "Ricty Discord" "iso10646-1"))
