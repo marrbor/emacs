@@ -77,6 +77,21 @@
 (global-set-key "\C-cn" 'hs-toggle-hiding)
 (global-set-key "\C-cg" 'grep)
 
+;;; Font
+(if window-system (cons
+		   (set-face-attribute 'default nil
+				       :family "Ricty Discord"
+				       :height 180)
+		   (set-fontset-font (frame-parameter nil 'font)
+				     'japanese-jisx0208
+				     (cons "Ricty Discord" "iso10646-1"))
+		   (set-fontset-font (frame-parameter nil 'font)
+				     'japanese-jisx0212
+				     (cons "Ricty Discord" "iso10646-1"))
+		   (set-fontset-font (frame-parameter nil 'font)
+				     'katakana-jisx0201
+				     (cons "Ricty Discord" "iso10646-1"))))
+
 ;;; ￥キーでバックスラッシュを入力
 (define-key global-map [?¥] [?\\])
 
