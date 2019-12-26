@@ -174,7 +174,14 @@
   (interactive)
   (insert (format-time-string "%Y/%m/%d %T %z")))
 
+;;; reverse other-window
+(defun reverse-other-window ()
+  "Reverse curret move to other windows."
+  (interactive)
+  (other-window -1))
+(global-set-key "\C-xp" 'reverse-other-window)
 
+;;;
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
@@ -640,6 +647,9 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.apib\\'" . gfm-mode))
+
+(autoload 'markdown-preview-mode "markdown-preview-mode.el" t)
 
 ;; ファイル内容を標準入力で渡すのではなく、ファイル名を引数として渡すように設定
 (defun markdown-custom ()
@@ -650,7 +660,6 @@
 
 ;;; http://qiita.com/gooichi/items/2b185dbdf24166a15ca4
 (defvar markdown-command "multimarkdown")
-
 
 ;;; Makfile mode
 (add-to-list 'auto-mode-alist '("Makefile\\..*$" . makefile-gmake-mode))
@@ -786,7 +795,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell dart-mode typescript-mode auto-install ac-php php-auto-yasnippets php-mode smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
+    (uuidgen markdown-preview-mode exec-path-from-shell dart-mode typescript-mode auto-install ac-php php-auto-yasnippets php-mode smooth-scroll groovy-mode markdown-mode flycheck yaml-mode w3m plantuml-mode magit json-mode golint go-eldoc go-dlv go-autocomplete ddskk company-go)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -924,10 +933,6 @@
 ;(load-theme 'whiteboard t)
 ;(load-theme 'wombat t)
 (set-cursor-color "#ffffff")
-
-;;; 環境変数
-;;; http://emacs-jp.github.io/tips/environment-variable
-(setenv "GOPATH" (concat (concat (getenv "HOME") "/gopath")))
 
 ;;; PHP
 (require 'php-mode)
